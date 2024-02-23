@@ -61,12 +61,14 @@ include_once "./include/session.php";
             <div class="col-sm-6 mx-auto my-5 text-light" style="background-image: linear-gradient(to right,rgba(75, 75, 187, 0.5),rgba(90, 75, 90, 0.5));">
                 <?php echo message();?>
                 <form action="./handler.php" method="post">
-                    
-                    <label for="email">Email:</label>
-                    <input type="text" name="email" id="email" class="form-control">
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" class="form-control">
-                    <input type="submit" value="login" name="login" class="btn btn-primary btn-block my-2">
+                    <fieldset>
+                        <legend style="text-align: center;"><i class="fa fa-user-circle" aria-hidden="true"></i> User Login</legend>
+                        <label for="email"><i class="fas fa-mail-bulk    "></i> Email:</label>
+                        <input type="text" name="email" id="email" class="form-control">
+                        <label for="password"><i class="fa fa-lock" aria-hidden="true"></i> Password:</label>
+                        <input type="password" name="password" id="password" class="form-control">
+                        <input type="submit" value="login" name="login" class="btn btn-primary btn-block my-2">
+                    </fieldset>
                 </form>
             </div>
         </div>
