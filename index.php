@@ -88,7 +88,7 @@ require_once "./include/session.php";
             </div>
             <div class="col-sm-12">
                 <h1><i class="fas fa-hotel"></i> Hotels</h1>
-                <div class="overview-top owl-carousel">
+                <div class="overview-top owl-carousel owl-theme">
                     <div class="item">
                         <div class="jumbotron jumbotron-fluid">
                             <div class="container">
@@ -151,7 +151,44 @@ require_once "./include/session.php";
                 </div>
                 <!-- rooms -->
                 <h1>Rooms</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni, sint explicabo. Animi, ipsa. Facere praesentium magnam beatae sit modi ratione minus nemo! Ducimus dolorem placeat atque, deserunt corrupti cum libero.</p>
+                <div class="rooms owl-carousel owl-theme">
+                    <div class="item">
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <img class="img-fluid" src="./assets/images/hotel/rooms/140127103345-peninsula-shanghai-deluxe-mock-up.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <img class="img-fluid" src="./assets/images/hotel/rooms/eaton-dc-interiors-hotel-washington-dc-maryland-usa-adrian-gaut_dezeen_2364_col_2.webp" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <img class="img-fluid" src="./assets/images/hotel/rooms/photo-1611892440504-42a792e24d32.avif" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <img class="img-fluid" src="./assets/images/hotel/rooms/room2jpg.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <img class="img-fluid" src="./assets/images/hotel/rooms/room3.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
                 
             </div>
         </div>
@@ -176,7 +213,28 @@ require_once "./include/session.php";
                                         </button>
                                 </div>
                                 <div class="modal-body">
-                                    Body
+                                    <div class="form">
+                                        <form action="./handler.php" method="get">
+                                            <label for="fname">NameFirstname</label>
+                                            <input type="text" name="name" id="name" class="form-control">
+                                            <label for="lname">Lastname</label>
+                                            
+                                            <input type="text" name="lname" id="lname" class="form-control">
+                                            <label for="email">Email</label>
+                                            <input type="email" name="email" id="email" class="form-control">
+                                            <label for="Location"><i class="fa fa-location-arrow" aria-hidden="true"></i>Location</label>
+                                            <select name="location" id="location" class="form-control">
+                                                <option value="Nairobi">Nairobi</option>
+                                                <option value="Kisumu">Kisumu</option>
+                                                <option value="Mombasa">Mombasa</option>
+                                            </select>
+                                            <label for="From">From</label>
+                                            <input type="datetime-local" name="from" id="from" class="form-control">
+                                            <label for="to">To</label>
+                                            <input type="datetime-local" name="to" id="to" class="form-control">
+                                            <button class="my-1 book btn btn-primary btn-block">Book</button>
+                                        </form>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -200,6 +258,29 @@ require_once "./include/session.php";
         loop:true,
         margin:10,
         nav:true,
+        autoplay:true,
+        autoplayTimeout:2500,
+        autoplayHoverPause:true,
+        
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:3
+            }
+        }
+    });
+    $('.rooms').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        /*autoplay:true,
+        autoplayTimeout:2500,
+        autoplayHoverPause:true,*/
         
         responsive:{
             0:{

@@ -56,7 +56,7 @@ include_once "./include/session.php";
                     <fieldset>
                         <legend style="text-align: center;"><i class="fa fa-user-circle" aria-hidden="true"></i> User Login</legend>
                         <label for="email"><i class="fas fa-mail-bulk    "></i> Email:</label>
-                        <input type="text" name="email" id="email" class="form-control">
+                        <input type="email" name="email" id="email" class="form-control">
                         <label for="password"><i class="fa fa-lock" aria-hidden="true"></i> Password:</label>
                         <input type="password" name="password" id="password" class="form-control">
                         <input type="submit" value="login" name="login" class="btn btn-primary btn-block my-2">
