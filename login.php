@@ -13,7 +13,7 @@ include_once "./include/session.php";
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="assets/css/style.css">
-<title>Signup</title>
+<title>Login</title>
 <style>
     body {
         background-image: url('./assets/images/Login/login.jpg');
