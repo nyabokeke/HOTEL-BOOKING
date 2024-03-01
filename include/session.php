@@ -10,7 +10,9 @@ function logindetails() {
         $email = $_SESSION["email"];
         $id = $_SESSION['id'];
         $type = $_SESSION['type'];
-        return array($email, $id, $type);
+        $firstname = $_SESSION['firstname'];
+        $lastname = $_SESSION['lastname'];
+        return array($email, $id, $type, $firstname, $lastname);
     }else{
         return null;
     }
@@ -34,6 +36,10 @@ function message() {
     } else {
         return null;
     }
+}
+function clearsession(){
+    session_destroy();
+    
 }
 
 ?>

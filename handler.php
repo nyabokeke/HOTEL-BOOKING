@@ -53,6 +53,7 @@ elseif(isset($_POST['login'])){
         $type = $rows['type'];
         $id = $rows['id'];
         $firstname = $rows['firstname'];
+        $lastname = $rows['lastname'];
 
     }
     if($type == null){
@@ -64,6 +65,7 @@ elseif(isset($_POST['login'])){
         $_SESSION['type'] = $type;
         $_SESSION['email'] = $email;
         $_SESSION['firstname'] = $firstname;
+        $_SESSION['lastname'] = $lastname;
         $_SESSION['successmsg'] = "Login successful welcome ,$firstname";
 
         
@@ -84,5 +86,29 @@ elseif(isset($_POST['login'])){
         $_SESSION['errormsg']= "something went wrong";
         header("location:./login.php");
     }
+}
+elseif(isset($_GET['bookingform'])){
+    $logindetails =logindetails();
+    $firstname = $logindetails[3];
+    $lastname = $logindetails[4];
+    $from = $_GET['from'];
+    
+    $to = $_GET['to'];
+    $email = $_GET['email'];
+    $id = $_GET['id'];
+    $location = $_GET['location'];
+    $Number_of_people = $_GET['nop'];
+    $query = "INSERT INTO BOOKING(user_id, datetime_from,datetime_to, location, number_of_people) VALUES('$id','$from','$to','$location','$Number_of_people')";
+    $execute = $conn->query($query);
+    if($execute){
+        echo "Booking was successful,\nLocation: $location \nFrom: $from \nTo: $to  \nEmail: $email \nName: $firstname $lastname";
+
+        
+    }else{ 
+        echo "something went wrong!!";
+       
+    }
+    //echo "connection made,location $location from $from to $to  for $email userid =$id";
+
 }
 ?>

@@ -1,5 +1,15 @@
 <?php
 require_once "./include/session.php";
+$logindetails =logindetails();
+if($logindetails != null){
+    $email = $logindetails[0];
+    $id = $logindetails[1];
+    $type = $logindetails[2];
+    $firstname = $logindetails[3];
+    $lastname = $logindetails[4];
+}else{
+    header("location:login.php");
+}
 
 ?>
 <!DOCTYPE html>
@@ -73,7 +83,7 @@ require_once "./include/session.php";
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="./login.php"><i class="fas fa-door-open    "></i> logout</a>
+                                <a class="nav-link" href="./login.php"><i class="fas fa-door-open    "></i> logout, <?php echo $firstname; ?></a>
                             </li>
                             
                             
@@ -214,14 +224,14 @@ require_once "./include/session.php";
                                 </div>
                                 <div class="modal-body">
                                     <div class="form">
-                                        <form action="./handler.php" method="get">
-                                            <label for="fname">NameFirstname</label>
-                                            <input type="text" name="name" id="name" class="form-control">
+                                        <form>
+                                            <label for="fname">Firstname</label>
+                                            <input type="text" value="<?php echo $firstname; ?>" name="fname" id="fname" class="form-control">
                                             <label for="lname">Lastname</label>
                                             
-                                            <input type="text" name="lname" id="lname" class="form-control">
+                                            <input value="<?php echo $lastname; ?>" type="text" name="lname" id="lname" class="form-control">
                                             <label for="email">Email</label>
-                                            <input type="email" name="email" id="email" class="form-control">
+                                            <input value="<?php echo $email; ?>" type="email" name="email" id="email" class="form-control">
                                             <label for="Location"><i class="fa fa-location-arrow" aria-hidden="true"></i>Location</label>
                                             <select name="location" id="location" class="form-control">
                                                 <option value="Nairobi">Nairobi</option>
@@ -232,13 +242,28 @@ require_once "./include/session.php";
                                             <input type="datetime-local" name="from" id="from" class="form-control">
                                             <label for="to">To</label>
                                             <input type="datetime-local" name="to" id="to" class="form-control">
-                                            <button class="my-1 book btn btn-primary btn-block">Book</button>
+                                            <p class="center">Number of People</p>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="number_of_people" id="one" value="1">
+                                                <label class="form-check-label" for="onetwo">1</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="number_of_people" id="two" value="2">
+                                                <label class="form-check-label" for="two">2</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="number_of_people" id="five" value="5">
+                                                <label class="form-check-label" for="five">5</label>
+                                            </div>
+                                            
+                                            
+                                            <button class="my-1 book-btn btn btn-primary btn-block">Book</button>
                                         </form>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save</button>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -254,6 +279,7 @@ require_once "./include/session.php";
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+$(document).ready(function() {
     $('.overview-top').owlCarousel({
         loop:true,
         margin:10,
@@ -293,7 +319,47 @@ require_once "./include/session.php";
                 items:3
             }
         }
-    })
+    });
+    $('.book-btn').on('click', function(e){
+        e.preventDefault();
+        var fname = $('#fname').val();
+        var lname = $('#lname').val();
+        var email = $('#email').val();
+        var location = $('#location').val();
+        var from = $('#from').val();
+        //to make sure the datetime for from is not empty, input from the form
+        var id = <?php echo $id ?>//get the user ID
+        if(from === ""){
+            alert("from cannot be empty, please fill all fields!!");
+            return;//to break the code
+        }
+        var to = $('#to').val();
+        //to make sure the datetime for to is not empty, input from the form
+        if(to === ""){
+            alert("To cannot be empty, please fill all fields!!");
+            return;//to break the code
+        }
+        // Select the checked radio button
+        var checkedRadioButton = $('input[name="number_of_people"]:checked');
+
+        // Get the value of the checked radio button
+        var checkedValue = checkedRadioButton.val();
+
+        // Log the value to the console (you can use it as needed)
+        //alert(checkedValue);
+        
+        $.ajax({
+            url:"./handler.php",
+            method:"GET",
+            data:{bookingform:1,fname,lname,email,location,from,to,id, nop:checkedValue},
+            success:function(data){
+                alert(data);
+            }
+
+        });
+
+    });
+});
 </script>
 </body>
 </html>
