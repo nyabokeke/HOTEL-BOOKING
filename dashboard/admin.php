@@ -138,7 +138,15 @@ include_once "../include/session.php";
             <div class="col-sm-12">
                 <h1 class="center">Users</h1>
                 <hr>
+                
             </div>
+           
+        </div>
+        <div class="row">
+        <div class="col-sm-6">
+        <canvas id="userschart"  height="300px"></canvas>
+        </div>
+        <div class="col-sm-6"></div>
         </div>
     </div>
 
@@ -149,60 +157,107 @@ include_once "../include/session.php";
 
 <script>
     $(document).ready(function () {
-        var ctx = $('#bookingChart')[0].getContext('2d');
-        $.ajax({
-            url: "./adminhandler.php",
-            type: "GET",
-            data: { bookings: 1 },
-            dataType: "json",
-            success: function (data) {
-                var tbdata = data;
-    
-                // Separate arrays for datetime and count
-                var datetimeValues = [];
-                var countValues = [];
-    
-                // Extract datetime and count values from tbdata
-                tbdata.forEach(function (item) {
-                    datetimeValues.push(new Date(item.datetime));
-                    countValues.push(parseInt(item.count));
-                });
-    
-                // Now you can use datetimeValues and countValues as separate arrays
-                console.log('Datetime Values:', datetimeValues);
-                console.log('Count Values:', countValues);
-    
-                // Initial chart data
-                var initialData = {
-                    labels: datetimeValues,
-                    datasets: [{
-                        label: 'Hotel Bookings based on Date',
-                        data: countValues,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                        ],
-                        borderWidth: 1
-                    }]
-                };
-    
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: initialData,
-                    options: {
-                        // Additional chart options
-                    }
-                });
-            }
-        });
+    // Bookings chart
+    var ctx = $('#bookingChart')[0].getContext('2d');
+    $.ajax({
+        url: "./adminhandler.php",
+        type: "GET",
+        data: { bookings: 1 },
+        dataType: "json",
+        success: function (data) {
+            var tbdata = data;
+
+            // Separate arrays for datetime and count
+            var datetimeValues = [];
+            var countValues = [];
+
+            // Extract datetime and count values from tbdata
+            tbdata.forEach(function (item) {
+                datetimeValues.push(new Date(item.datetime));
+                countValues.push(parseInt(item.count));
+            });
+
+            // Initial chart data
+            var initialData = {
+                labels: datetimeValues,
+                datasets: [{
+                    label: 'Hotel Bookings based on Date',
+                    data: countValues,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            var bookingsChart = new Chart(ctx, {
+                type: 'bar',
+                data: initialData,
+                options: {
+                    // Additional chart options
+                }
+            });
+
+            // Users chart
+            var ctx_users = $('#userschart')[0].getContext('2d');
+            $.ajax({
+                url: "./adminhandler.php",
+                type: "GET",
+                data: { users: 1 },
+                dataType: "json",
+                success: function (data) {
+                    var tbdata1 = data;
+
+                    // Separate arrays for datetime and count
+                    var datetimeValues1 = [];
+                    var countValues1 = [];
+
+                    // Extract datetime and count values from tbdata
+                    tbdata1.forEach(function (item) {
+                        datetimeValues1.push(new Date(item.datetime));
+                        countValues1.push(parseInt(item.count));
+                    });
+
+                    // Initial chart data for Users chart
+                    var initialData1 = {
+                        labels: datetimeValues1,
+                        datasets: [{
+                            label: 'User registrations based on Date',
+                            data: countValues1,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+
+                    var usersChart = new Chart(ctx_users, {
+                        type: 'pie',
+                        data: initialData1, // Use initialData1 for Users chart
+                        options: {
+                            // Additional chart options
+                        }
+                    });
+                }
+            });
+        }
     });
-    
+});
+
 </script>
 </body>
 </html>
