@@ -69,10 +69,13 @@ elseif(isset($_POST['login'])){
         $_SESSION['successmsg'] = "Login successful welcome ,$firstname";
 
         
-        if($type == 1){
-            header("location:./admin.php");
-        }else{
+        if($type == 0){
             header("location:./index.php");
+        }else if($type == 1){
+            header("location:./dashboard/admin.php");
+        }else{
+            $_SESSION['errormsg']= "Something went wrong!";
+            header("location: login.php");
         }
     }
     else if(password_verify($password, $passwordhash)==false){

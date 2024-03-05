@@ -1,6 +1,12 @@
 <?php 
 include_once "../include/db.php";
 include_once "../include/session.php";
+$userlogin = logindetails();
+$type = $userlogin[2];
+//to make sure the logged in user is admin
+if($type != 1){
+    header("location:../login.php");
+}
 
 ?>
 <!DOCTYPE html>
@@ -16,19 +22,22 @@ include_once "../include/session.php";
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
+    :root{
+        scroll-behavior: smooth;
+    }
     .admin_top_nav {
         background: linear-gradient(to right, #8e44ad, #3498db);
         /*animation: waveAnimation 5s infinite alternate ease-in-out;   */ }
     /* Set a specific width for a column */
-.table th, .table td {
+    .table th, .table td {
     width: 100px;
-}
+    }
 
-/* Allow columns to shrink to fit content */
-.table th, .table td {
+    /* Allow columns to shrink to fit content */
+    .table th, .table td {
     min-width: 0;
     white-space: nowrap;
-}
+    }
 
     
     
@@ -46,32 +55,30 @@ include_once "../include/session.php";
                     <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
                         aria-expanded="false" aria-label="Toggle navigation"></button>
                     <div class="collapse navbar-collapse" id="collapsibleNavId">
-                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <ul class="navbar-nav mr-auto my-auto mx-auto mt-2 mt-lg-0">
                             <li class="nav-item active">
                                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
-                            </li>
+                            
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                    <a class="dropdown-item" href="#">Action 1</a>
-                                    <a class="dropdown-item" href="#">Action 2</a>
+                                    <a class="dropdown-item" href="#bookings">Bookings</a>
+                                    <a class="dropdown-item" href="#users">Users</a>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../login.php"><i class="fas fa-door-open    "></i> Logout</a>
+                            </li>
                         </ul>
-                        <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                        
                     </div>
                 </nav>
             </div>
         </div>
         <div class="row my-1">
             <div class="col-sm-12">
-                <h1 class="center">Clients Bookings Data</h1>
+                <h1 id="bookings" class="center">Clients Bookings Data</h1>
             </div>
             <div class="col-sm-6 bg-light"> <!--chart-->
                 <canvas id="bookingChart"  height="300px"></canvas>
@@ -136,17 +143,29 @@ include_once "../include/session.php";
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <h1 class="center">Users</h1>
+                <h1 id="users" class="center">Users</h1>
                 <hr>
                 
             </div>
            
         </div>
         <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-6 bg-light text-light">
         <canvas id="userschart"  height="300px"></canvas>
         </div>
-        <div class="col-sm-6"></div>
+        <div class="col-sm-6 ">
+            <table class="table bg-light text-dark">
+                <tr>
+                    <th>S/NO</th>
+                    <th>FirstName</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>DateTime Created</th>
+
+                </tr>
+            </table>
+        </div>
         </div>
     </div>
 

@@ -5,6 +5,10 @@ if($logindetails != null){
     $email = $logindetails[0];
     $id = $logindetails[1];
     $type = $logindetails[2];
+    //to make sure the logged in user is customer
+    if($type != 0){
+        header("location:./login.php");
+    }
     $firstname = $logindetails[3];
     $lastname = $logindetails[4];
 }else{
