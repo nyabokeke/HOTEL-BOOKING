@@ -35,7 +35,7 @@ if($type != 1){
     /* Allow columns to shrink to fit content */
     .table th, .table td {
     min-width: 0;
-    white-space: nowrap;
+    white-space: wrap;
     }
     
 
@@ -85,65 +85,13 @@ if($type != 1){
                     <label class="form-check-label" for="graphchanger">line</label>
                 </div>
             </div>
-            <div class="col-sm-6 bg-light"> <!--chart-->
+            <div class="col-sm-4 bg-light"> <!--chart-->
                 <canvas id="bookingChart"  height="300px"></canvas>
 
             </div>
             
-            <div class="col-sm-6">
-                <table class="text-dark bg-light table-striped table-hover table-responsive">
-                    <tr>
-                        <th>S/N</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Location</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th><abbr title="Number Of People">NOP</abbr></th>
-                        <th>DateTime</th>
-                        <th>Delete</th>
-                    </tr>
-                    
-                        <?php 
-                        $query = "SELECT * FROM booking";
-                        $result = $conn->query($query);
-                        if (!$result) {
-                            echo "Error executing the query: ". $conn->error;
-                            exit();
-                        }
-                        $i = 0;
-                        while ($row = $result->fetch_assoc()) {
-                            $user_id = $row['user_id'];
-                            $query1 = "SELECT * FROM users WHERE id='$user_id'";
-                            $result1 = $conn->query($query1);
-                            while ($row1 = $result1 -> fetch_assoc()){
-                                $fname = $row1['firstname'];
-                                $lname = $row1['lastname'];
-                                $email = $row1['email'];
-                                
-                            }
-                            $datetime_from = $row['datetime_from'];
-                            $datetime_to= $row['datetime_to'];
-                            $datetime =$row['datetime'];
-                            $location = $row['location'];
-                            $nop = $row['number_of_people'];
-                            $i++;
-                        
-
-                        ?>
-                    <tr>
-                        <td><?php echo $i ; ?></td>
-                        <td><?php echo $fname, " ",$lname ; ?></td>
-                        <td><?php echo $email ; ?></td>
-                        <td><?php echo $location ; ?></td>
-                        <td><?php echo $datetime_from ; ?></td>
-                        <td><?php echo $datetime_to ; ?></td>
-                        <td><?php echo $nop ; ?></td>
-                        <td><?php echo $datetime ; ?></td>
-                        <td><button class="btn btn-block btn-danger">Delete</button></td>
-                    </tr>
-                    <?php }?>
-                </table>
+            <div class="col-sm-8 " id="bookingTable">
+                
             </div>
         </div>
         <div class="row">
@@ -160,21 +108,12 @@ if($type != 1){
            
         </div>
         <div class="row">
-        <div class="col-sm-6 bg-light text-light">
+        <div class="col-sm-4 bg-light text-light">
         <canvas id="userschart"  height="300px"></canvas>
         </div>
-        <div class="col-sm-6 ">
-            <table class="table bg-light text-dark">
-                <tr>
-                    <th>S/NO</th>
-                    <th>FirstName</th>
-                    <th>Lastname</th>
-                    <th>Email</th>
-                    <th>Type</th>
-                    <th>DateTime Created</th>
+        <div class="col-sm-8 " id="usersTable">
+            
 
-                </tr>
-            </table>
         </div>
         </div>
     </div>
@@ -186,6 +125,82 @@ if($type != 1){
 
 <script>
     $(document).ready(function () {
+        updatebookingtbl();
+        updateuserstbl();
+        //refresh the bookingtable
+        function updateuserstbl(){
+            $.ajax({
+                method: "GET",
+                url: "./adminhandler.php",
+                data:{updateuserstbl:1},
+                success: function (data) {
+                    $("#usersTable").html(data);
+                }
+            });
+            
+        }
+        function updatebookingtbl(){
+            $.ajax({
+                method: "GET",
+                url: "./adminhandler.php",
+                data:{updatebookingtbl:1},
+                success: function (data) {
+                    $("#bookingTable").html(data);
+                }
+            });
+        }
+        //buttons
+        //users delete button
+        $("body").on("click", ".btn-users", function() {
+            var confirmation = confirm("Are you sure you want to delete this user?");  // The default button labels are "OK" and "Cancel"
+
+            if (confirmation) {
+                // User clicked "OK"
+                var id = $(this).data("id");
+
+                $.ajax({
+                    url: "./adminhandler.php",
+                    method: "get",
+                    data: { id: id, usersdelete: 1 },
+                    dataType: "json",
+                    success: function(data) {
+                        alert(data);
+                        updateCharts();
+                        updateuserstbl();
+                    }
+                });
+            } else {
+                // User clicked "Cancel" or closed the dialog
+                return;
+            }
+
+
+        });
+        //bookings btn
+        $("body").on("click", ".btn-bookings", function() {
+            var confirmation = confirm("Are you sure?");  // The default button labels are "OK" and "Cancel"
+
+            if (confirmation) {
+                // User clicked "OK"
+                var id = $(this).data("id");
+
+                $.ajax({
+                    url: "./adminhandler.php",
+                    method: "get",
+                    data: { id: id, bookingsdelete: 1 },
+                    dataType: "json",
+                    success: function(data) {
+                        alert(data);
+                        updateCharts();
+                        updatebookingtbl();
+                    }
+                });
+            } else {
+                // User clicked "Cancel" or closed the dialog
+                return;
+            }
+        });
+
         // Bookings chart
         var ctx = $('#bookingChart')[0].getContext('2d');
         var bookingsChart = null;
@@ -213,6 +228,7 @@ if($type != 1){
             updateCharts();
         });
     
+    
         function updateCharts() {
             // Bookings chart
             $.ajax({
@@ -229,9 +245,13 @@ if($type != 1){
     
                     // Extract datetime and count values from tbdata
                     tbdata.forEach(function (item) {
-                        datetimeValues.push(new Date(item.datetime));
+                        // Format the date and push it to the array
+                        var date = new Date(item.datetime);
+                        var formattedDate = date.toString().split(' ').slice(0, 4).join(' '); // Extract day, month, dayOfMonth, and year
+                        datetimeValues.push(formattedDate);
                         countValues.push(parseInt(item.count));
                     });
+
     
                     // Initial chart data
                     var initialData = {
@@ -283,9 +303,13 @@ if($type != 1){
     
                     // Extract datetime and count values from tbdata
                     tbdata1.forEach(function (item) {
-                        datetimeValues1.push(new Date(item.datetime));
+                        // Format the date and push it to the array
+                        var date = new Date(item.datetime);
+                        var formattedDate = date.toString().split(' ').slice(0, 4).join(' '); // Extract day, month, dayOfMonth, and year
+                        datetimeValues1.push(formattedDate);
                         countValues1.push(parseInt(item.count));
                     });
+
     
                     // Initial chart data for Users chart
                     var initialData1 = {
