@@ -50,7 +50,7 @@ if($type != 1){
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <nav class="navbar navbar-expand-sm navbar-dark admin_top_nav" >
+                <nav class="navbar navbar-expand-sm navbar-dark admin_top_nav fixed-top" >
                     <a class="navbar-brand" href="#"><img  class="logo" src="../assets/images/logo/velvet-logo.png" alt=""></a>
                     <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
                         aria-expanded="false" aria-label="Toggle navigation"></button>
@@ -76,7 +76,7 @@ if($type != 1){
                 </nav>
             </div>
         </div>
-        <div class="row my-1">
+        <div class="row " style="margin-top: 70px;">
             <div class="col-sm-12">
                 <h1 id="bookings" class="center">Clients Bookings Data</h1>
                 <!-- switch b2n charts type -->
