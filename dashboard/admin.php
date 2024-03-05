@@ -16,8 +16,7 @@ if($type != 1){
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="Description" content="Enter your description here"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha512-Ez0cGzNzHR1tYAv56860NLspgUGuQw16GiOOp/I2LuTmpSK9xDXlgJz3XN4cnpXWDmkNBKXR/VDMTCnAaEooxA==" crossorigin="anonymous" referrerpolicy="no-referrer" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="assets/css/style.css">
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -38,6 +37,7 @@ if($type != 1){
     min-width: 0;
     white-space: nowrap;
     }
+    
 
     
     
@@ -79,6 +79,11 @@ if($type != 1){
         <div class="row my-1">
             <div class="col-sm-12">
                 <h1 id="bookings" class="center">Clients Bookings Data</h1>
+                <!-- switch b2n charts type -->
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="graphchanger">
+                    <label class="form-check-label" for="graphchanger">line</label>
+                </div>
             </div>
             <div class="col-sm-6 bg-light"> <!--chart-->
                 <canvas id="bookingChart"  height="300px"></canvas>
@@ -145,6 +150,11 @@ if($type != 1){
             <div class="col-sm-12">
                 <h1 id="users" class="center">Users</h1>
                 <hr>
+                <!-- switch b2n charts type -->
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="userchanger">
+                    <label class="form-check-label" for="userchanger">bar</label>
+                </div>
                 
             </div>
            
@@ -176,56 +186,89 @@ if($type != 1){
 
 <script>
     $(document).ready(function () {
-    // Bookings chart
-    var ctx = $('#bookingChart')[0].getContext('2d');
-    $.ajax({
-        url: "./adminhandler.php",
-        type: "GET",
-        data: { bookings: 1 },
-        dataType: "json",
-        success: function (data) {
-            var tbdata = data;
-
-            // Separate arrays for datetime and count
-            var datetimeValues = [];
-            var countValues = [];
-
-            // Extract datetime and count values from tbdata
-            tbdata.forEach(function (item) {
-                datetimeValues.push(new Date(item.datetime));
-                countValues.push(parseInt(item.count));
-            });
-
-            // Initial chart data
-            var initialData = {
-                labels: datetimeValues,
-                datasets: [{
-                    label: 'Hotel Bookings based on Date',
-                    data: countValues,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                    ],
-                    borderWidth: 1
-                }]
-            };
-
-            var bookingsChart = new Chart(ctx, {
-                type: 'bar',
-                data: initialData,
-                options: {
-                    // Additional chart options
+        // Bookings chart
+        var ctx = $('#bookingChart')[0].getContext('2d');
+        var bookingsChart = null;
+        var toggle1type = "bar";
+        var toggle2type = "pie";
+        
+        // Users chart
+        var ctx_users = $('#userschart')[0].getContext('2d');
+        var usersChart = null;
+    
+        $("#graphchanger").on("change", function(){
+            if ($(this).is(':checked')) {
+                toggle1type = 'line';
+            } else {
+                toggle1type = 'bar';
+            }
+            updateCharts();
+        });
+        $("#userchanger").on("change", function(){
+            if ($(this).is(':checked')) {
+                toggle2type = 'bar';
+            } else {
+                toggle2type = 'pie';
+            }
+            updateCharts();
+        });
+    
+        function updateCharts() {
+            // Bookings chart
+            $.ajax({
+                url: "./adminhandler.php",
+                type: "GET",
+                data: { bookings: 1 },
+                dataType: "json",
+                success: function (data) {
+                    var tbdata = data;
+    
+                    // Separate arrays for datetime and count
+                    var datetimeValues = [];
+                    var countValues = [];
+    
+                    // Extract datetime and count values from tbdata
+                    tbdata.forEach(function (item) {
+                        datetimeValues.push(new Date(item.datetime));
+                        countValues.push(parseInt(item.count));
+                    });
+    
+                    // Initial chart data
+                    var initialData = {
+                        labels: datetimeValues,
+                        datasets: [{
+                            label: 'Hotel Bookings based on Date',
+                            data: countValues,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+    
+                    // If the chart instance exists, destroy it before creating a new one
+                    if (bookingsChart) {
+                        bookingsChart.destroy();
+                    }
+    
+                    bookingsChart = new Chart(ctx, {
+                        type: toggle1type,
+                        data: initialData,
+                        options: {
+                            // Additional chart options
+                        }
+                    });
                 }
             });
-
+    
             // Users chart
-            var ctx_users = $('#userschart')[0].getContext('2d');
             $.ajax({
                 url: "./adminhandler.php",
                 type: "GET",
@@ -233,17 +276,17 @@ if($type != 1){
                 dataType: "json",
                 success: function (data) {
                     var tbdata1 = data;
-
+    
                     // Separate arrays for datetime and count
                     var datetimeValues1 = [];
                     var countValues1 = [];
-
+    
                     // Extract datetime and count values from tbdata
                     tbdata1.forEach(function (item) {
                         datetimeValues1.push(new Date(item.datetime));
                         countValues1.push(parseInt(item.count));
                     });
-
+    
                     // Initial chart data for Users chart
                     var initialData1 = {
                         labels: datetimeValues1,
@@ -263,9 +306,14 @@ if($type != 1){
                             borderWidth: 1
                         }]
                     };
-
-                    var usersChart = new Chart(ctx_users, {
-                        type: 'pie',
+    
+                    // If the chart instance exists, destroy it before creating a new one
+                    if (usersChart) {
+                        usersChart.destroy();
+                    }
+    
+                    usersChart = new Chart(ctx_users, {
+                        type: toggle2type,
                         data: initialData1, // Use initialData1 for Users chart
                         options: {
                             // Additional chart options
@@ -274,8 +322,11 @@ if($type != 1){
                 }
             });
         }
+    
+        // Initial chart rendering
+        updateCharts();
     });
-});
+    
 
 </script>
 </body>
