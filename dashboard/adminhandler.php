@@ -1,7 +1,7 @@
 <?php
 include_once "../include/db.php";
 
-if (isset($_GET['bookings'])) {
+if (isset($_POST['bookings'])) {
     $sql = "SELECT DATE_FORMAT(datetime, '%Y-%m-%d') as date, COUNT(*) as count FROM booking GROUP BY date";
 
     $result = $conn->query($sql);
@@ -23,7 +23,7 @@ if (isset($_GET['bookings'])) {
         echo json_encode(array('error' => 'Error executing query'));
     }
 }
-elseif (isset($_GET['users'])) {
+elseif (isset($_POST['users'])) {
     $sql = "SELECT DATE_FORMAT(datetime, '%Y-%m-%d') as date, COUNT(*) as count FROM users GROUP BY date";
 
     $result = $conn->query($sql);
@@ -45,8 +45,8 @@ elseif (isset($_GET['users'])) {
         echo json_encode(array('error' => 'Error executing query'));
     }
 }
-elseif(isset($_GET['bookingsdelete'])){
-    $id = $_GET['id'];
+elseif(isset($_POST['bookingsdelete'])){
+    $id = $_POST['id'];
     $query = "DELETE FROM booking WHERE id='$id'";
     $result = $conn->query($query);
     if (!$result) {
@@ -56,7 +56,7 @@ elseif(isset($_GET['bookingsdelete'])){
         echo json_encode("Deleted successfully");
     }
 }
-elseif(isset($_GET['updatebookingtbl'])){
+elseif(isset($_POST['updatebookingtbl'])){
     $table = '<table class="table text-dark bg-light table-striped table-hover table-responsive">
     <tr>
         <th>S/N</th>
@@ -108,10 +108,10 @@ elseif(isset($_GET['updatebookingtbl'])){
     $table .= "</table>";
     echo $table;
 }
-if (isset($_GET['usersdelete'])) {
+if (isset($_POST['usersdelete'])) {
     // Ensure that 'id' is set and is a valid integer
-    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-        $id = $_GET['id'];
+    if (isset($_POST['id']) && is_numeric($_POST['id'])) {
+        $id = $_POST['id'];
 
         // Use prepared statements to prevent SQL injection
         $query = $conn->prepare("DELETE FROM users WHERE id = ?");
@@ -129,7 +129,7 @@ if (isset($_GET['usersdelete'])) {
         echo json_encode("Invalid ID provided");
     }
 }
-elseif(isset($_GET['updateuserstbl'])){
+elseif(isset($_POST['updateuserstbl'])){
     $table = '<table class="table bg-light text-dark">
     <tr>
         <th>S/NO</th>
@@ -154,14 +154,14 @@ elseif(isset($_GET['updateuserstbl'])){
     
         $table .= "<tr>
             <td>$count</td>
-            <td>$fname</td>
-            <td>$lname</td>
-            <td>$email</td>
+            <td class='fname' data-id='$id' contenteditable >$fname</td>
+            <td class='lname' data-id='$id' contenteditable >$lname</td>
+            <td class='email' data-id='$id' contenteditable >$email</td>
             <td>";
     
         $usertype = ($type == 1) ? "Admin" : "Customer";
     
-        $table .= "<select name='type' id='type'>
+        $table .= "<select name='type' data-id='$id' id='type' class='type'>
                 <option value='0'" . (($type == 0) ? ' selected' : '') . ">Customer</option>
                 <option value='1'" . (($type == 1) ? ' selected' : '') . ">Admin</option>
                 </select>";
@@ -177,6 +177,73 @@ elseif(isset($_GET['updateuserstbl'])){
     
 
 
+}
+elseif(isset($_POST['editingfname'])){
+    
+    $fname = $_POST['fname'];
+    $id = $_POST['id'];
+    $sql = "UPDATE users SET firstname='$fname' WHERE id='$id'";
+    $execute = $conn->query($sql);
+
+    if($execute == true){
+        echo json_encode("updated success for $fname");
+    } else {
+        echo json_encode("Error: " . $conn->error);
+    }
+
+    echo json_encode(" id $id");
+}
+elseif(isset($_POST['editinglname'])){
+    
+    $lname = $_POST['lname'];
+    $id = $_POST['id'];
+    $sql = "UPDATE users SET lastname='$lname' WHERE id='$id'";
+    $execute = $conn->query($sql);
+
+    if($execute == true){
+        echo json_encode("updated success for $lname");
+    } else {
+        echo json_encode("Error: " . $conn->error);
+    }
+
+    echo json_encode(" id $id");
+}
+elseif(isset($_POST['editingemail'])){
+    
+    $email = $_POST['email'];
+    $id = $_POST['id'];
+    $sql = "UPDATE users SET email='$email' WHERE id='$id'";
+    $execute = $conn->query($sql);
+
+    if($execute == true){
+        echo json_encode("updated success for $email");
+    } else {
+        echo json_encode("Error: " . $conn->error);
+    }
+
+    echo json_encode(" id $id");
+}
+elseif(isset($_POST['editingtype'])){
+    
+    $type = $_POST['type'];
+    $id = $_POST['id'];
+    $sql = "UPDATE users SET type='$type' WHERE id='$id'";
+    $execute = $conn->query($sql);
+    if($type == 1){
+        $typedetail = "Admin";
+
+    }else{
+        $typedetail = "Customer";
+    }
+   
+
+    if($execute == true){
+        echo json_encode("updated success to $typedetail");
+    } else {
+        echo json_encode("Error: " . $conn->error);
+    }
+
+    echo json_encode(" id $id");
 }
 
 

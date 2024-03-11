@@ -125,12 +125,75 @@ if($type != 1){
 
 <script>
     $(document).ready(function () {
+        //onblur on content editable
+        $("body").on("blur", ".fname", function() {
+            var fname = $(this).text();
+            var id = $(this).data("id");
+
+            //alert(fname);
+            $.ajax({
+                url: "./adminhandler.php",
+                method: "POST",
+                dataType: "json",
+                data: { editingfname: 1, fname: fname, id: id },
+                success: function(data) {
+                    alert(data);
+                }
+            });
+
+
+        });
+        $("body").on("blur", ".lname", function() {
+            var lname = $(this).text();
+            var id = $(this).data("id");
+            //alert(id);
+
+            $.ajax({
+                url: "./adminhandler.php",
+                method: "POST",
+                data: { editinglname: 1, lname: lname, id: id }, // Include id inside the data object
+                success: function(data) {
+                    alert(data);
+                }
+            });
+        });
+
+        $("body").on("blur", ".email", function() {
+            var email = $(this).text();
+            var id = $(this).data("id");
+            //alert(id);
+            //alert(email);
+            $.ajax({
+                url:"./adminhandler.php",
+                method:"POST",
+                data:{editingemail:1,email:email,id:id},
+                success:function(data){
+                    alert(data);
+                }
+            });
+
+        });
+        //for dropdown
+        $("body").on("change", ".type", function() {
+            var type = $(this).val();
+            var id = $(this).data("id");
+            //alert(id);
+            //alert(type);
+            $.ajax({
+                url:"./adminhandler.php",
+                method:"POST",
+                data:{editingtype:1,type:type, id:id},
+                success:function(data){
+                    alert(data);
+                }
+            });
+        });
         updatebookingtbl();
         updateuserstbl();
         //refresh the bookingtable
         function updateuserstbl(){
             $.ajax({
-                method: "GET",
+                method: "POST",
                 url: "./adminhandler.php",
                 data:{updateuserstbl:1},
                 success: function (data) {
@@ -141,7 +204,7 @@ if($type != 1){
         }
         function updatebookingtbl(){
             $.ajax({
-                method: "GET",
+                method: "POST",
                 url: "./adminhandler.php",
                 data:{updatebookingtbl:1},
                 success: function (data) {
@@ -160,7 +223,7 @@ if($type != 1){
 
                 $.ajax({
                     url: "./adminhandler.php",
-                    method: "get",
+                    method: "POST",
                     data: { id: id, usersdelete: 1 },
                     dataType: "json",
                     success: function(data) {
@@ -186,7 +249,7 @@ if($type != 1){
 
                 $.ajax({
                     url: "./adminhandler.php",
-                    method: "get",
+                    method: "POST",
                     data: { id: id, bookingsdelete: 1 },
                     dataType: "json",
                     success: function(data) {
@@ -233,7 +296,7 @@ if($type != 1){
             // Bookings chart
             $.ajax({
                 url: "./adminhandler.php",
-                type: "GET",
+                type: "POST",
                 data: { bookings: 1 },
                 dataType: "json",
                 success: function (data) {
@@ -291,7 +354,7 @@ if($type != 1){
             // Users chart
             $.ajax({
                 url: "./adminhandler.php",
-                type: "GET",
+                type: "POST",
                 data: { users: 1 },
                 dataType: "json",
                 success: function (data) {
