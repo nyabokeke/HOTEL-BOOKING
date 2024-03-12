@@ -32,6 +32,9 @@ if($logindetails != null){
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.green.min.css" integrity="sha512-C8Movfk6DU/H5PzarG0+Dv9MA9IZzvmQpO/3cIlGIflmtY3vIud07myMu4M/NTPJl8jmZtt/4mC9bAioMZBBdA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <title>Hotel</title>
 <style>
+    :root{
+        scroll-behavior: smooth;
+    }
     .jumbotron img{
         height: 300px;
     }
@@ -80,10 +83,10 @@ if($logindetails != null){
                                 <a class="nav-link" href="./index.php"><i class="fa fa-home" aria-hidden="true"></i> Home <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Jump To</a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                    <a class="dropdown-item" href="#">Action 1</a>
-                                    <a class="dropdown-item" href="#">Action 2</a>
+                                    <a class="dropdown-item" href="#hotels">Hotels</a>
+                                    <a class="dropdown-item" href="#rooms">Rooms</a>
                                 </div>
                             </li>
                             <li class="nav-item">
@@ -101,7 +104,7 @@ if($logindetails != null){
                 
             </div>
             <div class="col-sm-12">
-                <h1><i class="fas fa-hotel"></i> Hotels</h1>
+                <h1 id='hotels'><i class="fas fa-hotel"></i> Hotels</h1>
                 <div class="overview-top owl-carousel owl-theme">
                     <div class="item">
                         <div class="jumbotron jumbotron-fluid">
@@ -164,7 +167,7 @@ if($logindetails != null){
 
                 </div>
                 <!-- rooms -->
-                <h1>Rooms</h1>
+                <h1 id='rooms'>Rooms</h1>
                 <div class="rooms owl-carousel owl-theme">
                     <div class="item">
                         <div class="jumbotron jumbotron-fluid">

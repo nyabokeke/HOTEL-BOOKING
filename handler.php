@@ -101,7 +101,7 @@ elseif(isset($_GET['bookingform'])){
     $id = $_GET['id'];
     $location = $_GET['location'];
     $Number_of_people = $_GET['nop'];
-    $query = "INSERT INTO BOOKING(user_id, datetime_from,datetime_to, location, number_of_people) VALUES('$id','$from','$to','$location','$Number_of_people')";
+    $query = "INSERT INTO booking(user_id, datetime_from,datetime_to, location, number_of_people) VALUES('$id','$from','$to','$location','$Number_of_people')";
     $execute = $conn->query($query);
     if($execute){
         echo "Booking was successful,\nLocation: $location \nFrom: $from \nTo: $to  \nEmail: $email \nName: $firstname $lastname";
