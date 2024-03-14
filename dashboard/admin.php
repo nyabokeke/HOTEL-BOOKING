@@ -94,6 +94,10 @@ if($type != 1){
                 
             </div>
         </div>
+        <div class="col-sm-12">
+                <p><?php echo message();?></p>
+                
+            </div>
         <div class="row">
             <div class="col-sm-12">
                 <h1 id="users" class="center">Users</h1>
