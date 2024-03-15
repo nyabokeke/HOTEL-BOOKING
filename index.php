@@ -220,7 +220,7 @@ if($logindetails != null){
                     <div class="item">
                         <div class="jumbotron jumbotron-fluid">
                             <div class="container">
-                                <img class="img-fluid" src="./assets/images/hotel/foods/drinks.jpeg" alt="">
+                                <img class="img-fluid" src="./assets/images/hotel/foods/food5.jpeg" alt="">
                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores voluptas eveniet voluptate optio. Totam at vel nam exercitationem officia sapiente, deserunt dignissimos, quisquam unde beatae aspernatur, sequi voluptatibus. Quaerat, veritatis!</p>
                             </div>
                         </div>
@@ -229,7 +229,7 @@ if($logindetails != null){
                     <div class="item">
                         <div class="jumbotron jumbotron-fluid">
                             <div class="container">
-                                <img class="img-fluid" src="./assets/images/hotel/foods/drink2.jpg " alt="">
+                                <img class="img-fluid" src="./assets/images/hotel/foods/food4.jpeg " alt="">
 
                 </div>
                 
