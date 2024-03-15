@@ -230,7 +230,12 @@ if($logindetails != null){
                         <div class="jumbotron jumbotron-fluid">
                             <div class="container">
                                 <img class="img-fluid" src="./assets/images/hotel/foods/food4.jpeg " alt="">
-
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores voluptas eveniet voluptate optio. Totam at vel nam exercitationem officia sapiente, deserunt dignissimos, quisquam unde beatae aspernatur, sequi voluptatibus. Quaerat, veritatis!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
                 </div>
                 
             </div>
