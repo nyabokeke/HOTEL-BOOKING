@@ -206,6 +206,32 @@ if($logindetails != null){
                     </div>
 
                 </div>
+                <!-- food -->
+                <h1>food and beverage</h1>
+                <div class="food owl-carousel">
+                    <div class="item">
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <img class="img-fluid" src="./assets/images/hotel/foods/drinks.jpeg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item2 -->
+                    <div class="item">
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <img class="img-fluid" src="./assets/images/hotel/foods/food5.jpeg" alt="">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores voluptas eveniet voluptate optio. Totam at vel nam exercitationem officia sapiente, deserunt dignissimos, quisquam unde beatae aspernatur, sequi voluptatibus. Quaerat, veritatis!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- item3 -->
+                    <div class="item">
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <img class="img-fluid" src="./assets/images/hotel/foods/food4.jpeg " alt="">
+
+                </div>
                 
             </div>
         </div>
@@ -308,6 +334,27 @@ $(document).ready(function() {
         }
     });
     $('.rooms').owlCarousel({
+        loop:true,
+        margin:10,
+        nav:true,
+        /*autoplay:true,
+        autoplayTimeout:2500,
+        autoplayHoverPause:true,*/
+        
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:3
+            }
+        }
+    });
+    //food carousel
+    $('.food').owlCarousel({
         loop:true,
         margin:10,
         nav:true,
