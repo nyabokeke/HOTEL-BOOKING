@@ -1,6 +1,8 @@
 <?php 
 include "./include/db.php";
 include "./include/session.php";
+include "./phpmailereg.php";
+
 
 if(isset($_POST['signup'])){
     $fname = $_POST['fname'];
@@ -104,7 +106,49 @@ elseif(isset($_GET['bookingform'])){
     $query = "INSERT INTO booking(user_id, datetime_from,datetime_to, location, number_of_people) VALUES('$id','$from','$to','$location','$Number_of_people')";
     $execute = $conn->query($query);
     if($execute){
-        echo "Booking was successful,\nLocation: $location \nFrom: $from \nTo: $to  \nEmail: $email \nName: $firstname $lastname";
+        $message = "
+            <p style='font-weight: bold;'>Booking was successful:</p>
+            <table style='border-collapse: collapse; width: 100%;'>
+                <tbody>
+                    <tr>
+                        <th style='border: 1px solid #ddd; padding: 8px;'>Name</th>
+                        <td style='border: 1px solid #ddd; padding: 8px;'>$firstname $lastname</td>
+                    </tr>
+                    <tr>
+                        <th style='border: 1px solid #ddd; padding: 8px;'>Email</th>
+                        <td style='border: 1px solid #ddd; padding: 8px;'>$email</td>
+                    </tr>
+                    <tr>
+                        <th style='border: 1px solid #ddd; padding: 8px;'>Location</th>
+                        <td style='border: 1px solid #ddd; padding: 8px;'>$location</td>
+                    </tr>
+                    <tr>
+                        <th style='border: 1px solid #ddd; padding: 8px;'>From</th>
+                        <td style='border: 1px solid #ddd; padding: 8px;'>$from</td>
+                    </tr>
+                    <tr>
+                        <th style='border: 1px solid #ddd; padding: 8px;'>To</th>
+                        <td style='border: 1px solid #ddd; padding: 8px;'>$to</td>
+                    </tr>
+                    <tr>
+                        <th style='border: 1px solid #ddd; padding: 8px;'>Number Of People</th>
+                        <td style='border: 1px solid #ddd; padding: 8px;'>$Number_of_people</td>
+                    </tr>
+                    
+                    
+                </tbody>
+            </table>";
+
+        echo "Booking was successful,\nLocation: $location \nFrom: $from \nTo: $to  \nEmail: $email \nName: $firstname $lastname \n";
+        //php mailer sending the booking
+        $sql = "SELECT * FROM credentials WHERE provider='gmail'";
+        $run = $conn->query($sql);
+        while($row = mysqli_fetch_array($run)){
+            $username = $row['email'];
+            $password = $row['password'];
+        }
+
+        sendmail($username,$password,$email,$firstname,$message);
 
         
     }else{ 

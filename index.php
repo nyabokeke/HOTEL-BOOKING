@@ -43,6 +43,7 @@ if($logindetails != null){
         text-align: center;
         font-weight: 900;
         background: -webkit-linear-gradient(blue, purple);
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
@@ -63,6 +64,23 @@ if($logindetails != null){
             background-clip: text;
             color: transparent;
             background-image: linear-gradient(to right, purple, blue);
+        }
+    }
+    .rotate {
+        display: inline-block;
+        transition: transform 0.5s ease-in-out; /* Smooth transition */
+    }
+    
+    .rotate.rotate-animation {
+        animation: rotateAnimation 2s linear infinite; /* Adjust duration and timing function as needed */
+    }
+    
+    @keyframes rotateAnimation {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
         }
     }
 
@@ -92,6 +110,7 @@ if($logindetails != null){
                             <li class="nav-item">
                                 <a class="nav-link" href="./login.php"><i class="fas fa-door-open    "></i> logout, <?php echo $firstname; ?></a>
                             </li>
+                        </ul>
                             
                             
                     </div>
@@ -283,7 +302,7 @@ if($logindetails != null){
                                             <p class="center">Number of People</p>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="number_of_people" id="one" value="1">
-                                                <label class="form-check-label" for="onetwo">1</label>
+                                                <label class="form-check-label" for="one">1</label>
                                             </div>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="number_of_people" id="two" value="2">
@@ -295,7 +314,7 @@ if($logindetails != null){
                                             </div>
                                             
                                             
-                                            <button class="my-1 book-btn btn btn-primary btn-block">Book</button>
+                                            <button class="my-1 book-btn btn btn-primary btn-block">Book  <span class="rotate"><i class="fas fa-sync-alt"></i></span></button>
                                         </form>
                                     </div>
                                 </div>
@@ -387,7 +406,7 @@ $(document).ready(function() {
         var location = $('#location').val();
         var from = $('#from').val();
         //to make sure the datetime for from is not empty, input from the form
-        var id = <?php echo $id ?>//get the user ID
+        var id = <?php echo $id ?>; //get the user ID
         if(from === ""){
             alert("from cannot be empty, please fill all fields!!");
             return;//to break the code
@@ -406,17 +425,23 @@ $(document).ready(function() {
 
         // Log the value to the console (you can use it as needed)
         //alert(checkedValue);
-        
+
+        // Disable the button
+        $(this).prop('disabled', true);
+        $('.rotate').addClass('rotate-animation');
+
         $.ajax({
             url:"./handler.php",
             method:"GET",
             data:{bookingform:1,fname,lname,email,location,from,to,id, nop:checkedValue},
             success:function(data){
                 alert(data);
+                // Re-enable the button after successful booking
+                $('.book-btn').prop('disabled', false);
+                $('.rotate').removeClass('rotate-animation');
             }
 
         });
-
     });
 });
 </script>

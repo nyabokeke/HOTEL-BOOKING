@@ -38,6 +38,7 @@ if($type != 1){
     white-space: wrap;
     }
     
+    
 
     
     
@@ -112,13 +113,37 @@ if($type != 1){
            
         </div>
         <div class="row">
-        <div class="col-sm-4 bg-light text-light">
-        <canvas id="userschart"  height="300px"></canvas>
-        </div>
-        <div class="col-sm-8 " id="usersTable">
-            
+            <div class="col-sm-4 bg-light text-light">
+                <canvas id="userschart"  height="300px"></canvas>
+            </div>
+            <div class="col-sm-8 " id="usersTable">
+            <!-- users table placeholder -->
 
+            </div>
         </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>Credentials</h1>
+                <div class="credentials" id="credentialsTable">
+                    <!-- credentials place holder -->
+                </div>
+            </div>
+            <div class="col-sm-5 mx-auto my-auto">
+                <h1>Add new Credentials</h1>
+                <form class="form bg-light text-dark">
+                    <p style="text-align: center;">Add <i class="fa fa-plus-circle" aria-hidden="true"></i></p>
+                    <hr>
+                    <label for="Provider">Provider <i class="fas fa-mail-bulk    "></i></label>
+                    <input type="text" name="provider" id="provider" placeholder="gmail" class="form-control">
+                    <label for="username">Username <i class="fa fa-user-circle" aria-hidden="true"></i></label>
+                    <input type="text" name="username" id="username" placeholder="username@example.com" class="form-control">
+                    <label for="password">password <i class="fa fa-lock" aria-hidden="true"></i></label>
+                    <input type="text" name="password" id="password" placeholder="in-app-password" class="form-control">
+                    <button class="my-2 btn btn-primary form-control credentialadd">Add Credential</button>
+                </form>
+
+            </div>
+
         </div>
     </div>
 
@@ -129,6 +154,50 @@ if($type != 1){
 
 <script>
     $(document).ready(function () {
+        //add credentials to db
+        $("body").on("click", ".credentialadd", function(e) {
+            e.preventDefault();
+            var username = $('#username').val();
+            var provider = $('#provider').val();
+            var password = $('#password').val();
+            if((password == "") / (provider == "") / (username == "")){
+                alert("input cannot be blank, please fill everything!!");
+                return;
+
+            }
+            $.ajax({
+                url:"./adminhandler.php",
+                method:"POST",
+                dataType:'json',
+                data:{username,provider,password,credentialadd:1},
+                success:function(data){
+                    alert(data);
+                    updatecredentialstbl();
+                }
+
+            });
+            
+        });
+        
+        //delete credentials
+        $("body").on("click", ".deletecredentials", function() {
+            var id = $(this).data("id");
+            var conf = confirm("Are you sure?");
+            if(conf == false){
+                return;
+            }
+            $.ajax({
+                url:"./adminhandler.php",
+                method:"POST",
+                dataType: "json",
+                data:{id:id,deletecredentials:1},
+                success:function(data){
+                    alert(data);
+                    updatecredentialstbl();
+                }
+            });
+
+        });
         //onblur on content editable
         $("body").on("blur", ".fname", function() {
             var fname = $(this).text();
@@ -192,6 +261,7 @@ if($type != 1){
                 }
             });
         });
+        updatecredentialstbl();
         updatebookingtbl();
         updateuserstbl();
         //refresh the bookingtable
@@ -202,6 +272,18 @@ if($type != 1){
                 data:{updateuserstbl:1},
                 success: function (data) {
                     $("#usersTable").html(data);
+                }
+            });
+            
+        }
+        //credentials table
+        function updatecredentialstbl(){
+            $.ajax({
+                method: "POST",
+                url: "./adminhandler.php",
+                data:{updatecredentialstbl:1},
+                success: function (data) {
+                    $("#credentialsTable").html(data);
                 }
             });
             
