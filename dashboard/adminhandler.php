@@ -129,6 +129,40 @@ if (isset($_POST['usersdelete'])) {
         echo json_encode("Invalid ID provided");
     }
 }
+//updatecredentialstbl
+elseif(isset($_POST['updatecredentialstbl'])){
+    $table = '<table class="table table-fluid bg-light text-dark">
+    <tr>
+        <th>S/NO</th>
+        <th>Provider</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>DateTime Created</th>
+        <th>Action</th>
+    </tr>';
+    $query = "SELECT * FROM credentials";
+    $execute = $conn->query($query);
+    $count = 0;
+    while ($row = mysqli_fetch_assoc($execute)) {
+        $id = $row['id'];
+        $email = $row['email'];
+        $password = $row['password'];
+        $provider = $row['provider'];
+        $datetime = $row['datetime'];
+        $count++;
+        $table.= "<tr>
+                <td data-id='$id'>$count</td>
+                <td data-id='$id'>$provider</td>
+                <td data-id='$id'>$email</td>
+                <td data-id='$id'>$password</td>
+                <td data-id='$id'>$datetime</td>
+                <td><button class='btn btn-block btn-danger deletecredentials' data-id='$id'>Delete</button></td>
+
+            <tr>";
+        }
+        $table .= "</table>";
+        echo $table;
+}
 elseif(isset($_POST['updateuserstbl'])){
     $table = '<table class="table bg-light text-dark">
     <tr>
@@ -245,7 +279,32 @@ elseif(isset($_POST['editingtype'])){
 
     echo json_encode(" id $id");
 }
+//deletion of credentials
+elseif(isset($_POST['deletecredentials'])){
+    $id = $_POST['id'];
+    $query = "DELETE FROM credentials WHERE id='$id'";
+    $run = $conn->query($query);
+    if($run == true){
+        echo json_encode("deleted successfully");
+    } else {
+        echo json_encode("Error: " . $conn->error);
+    }
+}
+//add credentials
+elseif(isset($_POST['credentialadd'])){
+    $provider = $_POST['provider'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    //NO NEED TO HASH PASSWORD AS IT IS USED IN PHPMAILER
+    $query = "INSERT INTO credentials (provider,email, password) VALUES('$provider','$username','$password')";
+    $execute = $conn->query($query);
+    if($execute == true){
+        echo json_encode("Credentials added successfully \nusername:$username");
+    } else {
+        echo json_encode("Error: " . $conn->error);
+    }
 
+}
 
     
                 
