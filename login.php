@@ -22,6 +22,15 @@ include_once "./include/session.php";
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
+    #forgotpasswordlink{
+        color:rgb(0, 238, 255);
+    }
+    #forgotpasswordlink:hover{
+        color:rgb(102, 184, 9);
+    }
+    #route{
+        text-align: center;
+    }
     
 </style>
 </head>
@@ -62,6 +71,7 @@ include_once "./include/session.php";
                         <input type="submit" value="login" name="login" class="btn btn-primary btn-block my-2">
                     </fieldset>
                 </form>
+                <p id="route">Forgot Password <a id="forgotpasswordlink" href="./forgotpassword.html">Reset password</a></p>
             </div>
         </div>
     </div>

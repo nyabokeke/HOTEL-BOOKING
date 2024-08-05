@@ -4,7 +4,9 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 function sendmail($sender,$password, $receipient,$receipientname, $message) {
-    require './vendor/autoload.php'; // Path to the autoloader
+    require './vendor/autoload.php';
+     // Path to the autoloader
+     
     
 
     $mail = new PHPMailer(true);

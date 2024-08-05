@@ -158,4 +158,38 @@ elseif(isset($_GET['bookingform'])){
     //echo "connection made,location $location from $from to $to  for $email userid =$id";
 
 }
+// forgotpassword
+elseif(isset($_POST['forgotpassword'])){
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirmpassword = $_POST["confirmpassword"];
+    if($password != $confirmpassword){
+        $_SESSION['errormsg']= "Passwords do not match";
+        header("location:./login.php");
+        exit();
+    }
+    // check if the email exist
+    $query = "SELECT * FROM users WHERE email='$email'";
+    $execute = $conn->query($query);
+    while($rows = mysqli_fetch_array($execute)){
+        $firstname = $rows['firstname'];
+    }
+    if(!$firstname){
+        $_SESSION['errormsg']= 'Username does not exist, Signup to continue! ';
+        header('location:./login.php');
+        exit();
+    }
+
+    $hashedpassword = password_hash($password, PASSWORD_DEFAULT);
+    $query = "UPDATE users SET password= '$hashedpassword' WHERE email='$email'";
+    $execute = mysqli_query($conn, $query);
+    if($execute){
+        $_SESSION["successmsg"] = "Password changed Successfully";
+    }else{
+        $_SESSION["errormsg"] = "Password change failed";
+    }
+    // redirect
+    header("location:./login.php");
+
+}
 ?>
